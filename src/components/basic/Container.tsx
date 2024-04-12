@@ -2,16 +2,21 @@ import {ReactNode} from "react";
 import styled from "styled-components";
 import {navbarHeight} from "./Sizes.tsx";
 
-function Container({children}: { children: ReactNode }) {
-    return <StyledContainer>{children}</StyledContainer>;
+interface ContainerProps {
+    small?: boolean;
 }
 
-const StyledContainer = styled.div`
+function Container({children, small}: { children: ReactNode; small?: boolean }) {
+    return <StyledContainer small={small}>{children}</StyledContainer>;
+}
+
+const StyledContainer = styled.div<ContainerProps>`
     height: 100%;
     max-width: 100%;
     min-height: calc(100vh - ${navbarHeight}px);
     padding: 0 20px;
     margin: 0 auto;
+    ${({small}) => small && "max-width: calc(100% - 150px);"};
 
     @media (min-width: 768px) {
         max-width: 750px;

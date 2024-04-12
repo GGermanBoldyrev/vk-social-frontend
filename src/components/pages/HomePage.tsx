@@ -3,7 +3,7 @@ import HomePageImage from "../../assets/homepic.jpg"
 import {blueColor} from "../basic/Colors.tsx";
 import {navbarHeight} from "../basic/Sizes.tsx";
 
-function Home() {
+function HomePage() {
     return (
         <Content>
             <TextContent>
@@ -50,4 +50,4 @@ const Image = styled.img`
     height: auto;
 `;
 
-export default Home
+export default HomePage
