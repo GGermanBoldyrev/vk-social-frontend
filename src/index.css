@@ -1,0 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+/* Base reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Reset link styles */
+a {
+    text-decoration: none; /* Remove underline */
+    color: inherit; /* Inherit color from parent */
+}
+
+a:hover {
+    text-decoration: none; /* Add underline on hover */
+}
+
+a:visited {
+    color: inherit; /* Inherit color for visited links */
+}
+
+/* Font */
+* {
+    font-family: "Roboto", sans-serif;
+    font-weight: 300;
+}

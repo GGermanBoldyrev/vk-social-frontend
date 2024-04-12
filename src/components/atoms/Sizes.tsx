@@ -1,0 +1,1 @@
+export const navbarHeight = 67.5;
