@@ -1,14 +1,14 @@
 import './App.css'
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom"
-import Container from "./components/molecules/Container.tsx";
+import Container from "./components/basic/Container.tsx";
 
 
 import Home from "./components/pages/Home.tsx";
 import Posts from "./components/pages/Posts.tsx";
 import Login from "./components/pages/Login.tsx";
 import Signup from "./components/pages/Signup.tsx";
-import Navbar from "./components/organisms/Navbar.tsx";
-import Footer from "./components/molecules/Footer.tsx";
+import Navbar from "./components/layout/Navbar.tsx";
+import Footer from "./components/layout/Footer.tsx";
 
 function App() {
     return (

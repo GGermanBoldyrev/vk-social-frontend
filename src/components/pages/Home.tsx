@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import HomePageImage from "../../assets/homepic.jpg"
-import {blueColor} from "../atoms/Colors.tsx";
-import {navbarHeight} from "../atoms/Sizes.tsx";
+import {blueColor} from "../basic/Colors.tsx";
+import {navbarHeight} from "../basic/Sizes.tsx";
 
 function Home() {
     return (

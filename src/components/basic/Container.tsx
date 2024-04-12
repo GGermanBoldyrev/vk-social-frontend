@@ -1,6 +1,6 @@
 import {ReactNode} from "react";
 import styled from "styled-components";
-import {navbarHeight} from "../atoms/Sizes.tsx";
+import {navbarHeight} from "./Sizes.tsx";
 
 function Container({children}: { children: ReactNode }) {
     return <StyledContainer>{children}</StyledContainer>;

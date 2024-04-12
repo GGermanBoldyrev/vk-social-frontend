@@ -1,8 +1,8 @@
 import {Link} from 'react-router-dom';
 import styled from 'styled-components';
-import Container from "../molecules/Container.tsx";
-import {blueColor} from "../atoms/Colors.tsx";
-import {navbarHeight} from "../atoms/Sizes.tsx";
+import Container from "../basic/Container.tsx";
+import {blueColor} from "../basic/Colors.tsx";
+import {navbarHeight} from "../basic/Sizes.tsx";
 
 interface Page {
     name: string;
@@ -48,7 +48,7 @@ const NavContent = styled.div`
 `;
 
 const Left = styled.div`
-    font-size: 24px;
+    font-size: 28px;
 `;
 
 const Right = styled.div`

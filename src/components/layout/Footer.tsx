@@ -5,9 +5,9 @@ function Footer() {
         <FooterContainer>
             <FooterContent>
                 <FooterText>
-                    © 2024 SocialVista. All rights reserved. <Dash>|</Dash>
+                    © 2024 SocialVista. All rights reserved.<Dash>|</Dash>
                     <GithubLink href="https://github.com/GGermanBoldyrev" target="_blank"
-                                rel="noopener noreferrer"> GitHub</GithubLink>
+                                rel="noopener noreferrer">GitHub</GithubLink>
                 </FooterText>
             </FooterContent>
         </FooterContainer>
@@ -31,7 +31,7 @@ const FooterText = styled.p`
 `;
 
 const Dash = styled.span`
-    margin: 0 5px;
+    margin: 0 10px;
 `;
 
 const GithubLink = styled.a`
