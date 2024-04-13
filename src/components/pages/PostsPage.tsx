@@ -5,7 +5,6 @@ import {PostInterface} from "../interfaces.ts";
 const examplePost: PostInterface = {
     id: 1,
     authorId: 2,
-    image: null,
     title: 'Lorem ipsum dolor sit amet',
     text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' +
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' +

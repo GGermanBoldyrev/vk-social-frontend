@@ -1,8 +1,9 @@
 export interface AuthorInterface {
     id: number,
-    image: string,
-    name: string,
-    surname: string,
+    username: string,
+    email: string,
+    password: string,
+    image?: string,
     postsId: number[],  // Array of post IDs authored by the author
 }
 
