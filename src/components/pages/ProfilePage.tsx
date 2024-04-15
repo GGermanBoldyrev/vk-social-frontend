@@ -5,7 +5,9 @@ import {useSelector} from "react-redux";
 import NoImage from "../../assets/user.png";
 
 function ProfilePage() {
+    // @ts-ignore
     const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+    // @ts-ignore
     const userId = useSelector((state) => state.auth.userId);
 
     const {data: profile, isLoading, isError} = useQuery("profile", async () => {
@@ -41,7 +43,8 @@ function ProfilePage() {
             <ProfileInfo>
                 <h1>User Profile</h1>
                 <ProfileData>
-                    <Block><strong></strong> {profile.image ? "image" : <AuthorImage src={NoImage} alt="Author image"/>}</Block>
+                    <Block><strong></strong> {profile.image ? "image" : <AuthorImage src={NoImage} alt="Author image"/>}
+                    </Block>
                     <Block><strong>ID:</strong> {profile.id}</Block>
                     <Block><strong>Username:</strong> {profile.username}</Block>
                     <Block><strong>Email:</strong> {profile.email}</Block>
@@ -49,7 +52,7 @@ function ProfilePage() {
             </ProfileInfo>
             <UserPosts>
                 <h2>User Posts</h2>
-                {user_posts.map(post => (
+                {user_posts.map((post: { id: number; title: string, text: string }) => (
                     <Post key={post.id}>
                         <h3>{post.title}</h3>
                         <p>{post.text}</p>
