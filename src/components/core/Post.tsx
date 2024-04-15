@@ -19,7 +19,7 @@ function Post({post}: { post: PostInterface }) {
             <div>
                 <AuthorImage src={NoImage} alt="Author image"/>
                 <div>
-                    <p>{post.authorId}</p>
+                    <p>{post.author_id}</p>
                     <p>{post.timestamp.toLocaleString()}</p>
                 </div>
             </div>
@@ -38,7 +38,7 @@ function Post({post}: { post: PostInterface }) {
                     </LikeButton>
                 </LikeBlock>
                 <CommentButton>
-                    <CommentHref to={`/post/${post.id}`}>{post.commentsId.length} Comments</CommentHref>
+                    <CommentHref to={`/post/${post.id}`}>{post.comments_ids.length} Comments</CommentHref>
                 </CommentButton>
             </ActionBlock>
         </PostContainer>

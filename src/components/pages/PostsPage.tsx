@@ -1,25 +1,25 @@
 import styled from "styled-components";
 import Post from "../core/Post.tsx";
+import {useQuery} from "react-query";
 import {PostInterface} from "../interfaces.ts";
 
-const examplePost: PostInterface = {
-    id: 1,
-    authorId: 2,
-    title: 'Lorem ipsum dolor sit amet',
-    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' +
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' +
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    timestamp: new Date(),
-    likes: 10,
-    commentsId: [1,2,3]
-};
-
-const posts: PostInterface[] = [examplePost, examplePost, examplePost, examplePost];
-
 function Posts() {
+    const {data: posts, isLoading, isError} = useQuery("posts", async () => {
+        const response = await fetch("http://localhost:8080/posts");
+        if (!response.ok) {
+            throw new Error("Failed to fetch posts");
+        }
+        return response.json();
+    });
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
+    if (isError) {
+        return <div>Error: Failed to fetch posts</div>;
+    }
     return (
         <GridContainer>
-            {posts.map(post => <Post key={post.id} post={post} />)}
+            {posts.data.map((post: PostInterface) => <Post key={post.id} post={post}/>)}
         </GridContainer>
     )
 }

@@ -7,6 +7,7 @@ import Navbar from "./components/layout/Navbar.tsx";
 import Footer from "./components/layout/Footer.tsx";
 import SinglePostPage from "./components/pages/SinglePostPage.tsx";
 import AuthPage from "./components/pages/AuthPage.tsx";
+import ProfilePage from "./components/pages/ProfilePage.tsx";
 
 function App() {
     return (
@@ -20,6 +21,7 @@ function App() {
                         <Route path="/login" element={<AuthPage type="login"/>}/>
                         <Route path="/register" element={<AuthPage type="register"/>}/>
                         <Route path="/post/:postId" element={<SinglePostPage/>}/>
+                        <Route path="/profile" element={<ProfilePage/>}/>
                     </Routes>
                 </Container>
                 <Footer/>

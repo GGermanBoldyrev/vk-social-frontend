@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react';
+import {useState} from 'react';
 import styled, {keyframes} from 'styled-components';
 import NoImage from "../../assets/user.png";
 import FilledLike from "../../assets/filled-like.png";
@@ -7,32 +7,31 @@ import Loader from "../../assets/loader.png";
 import {useParams} from 'react-router-dom';
 import {blueColor} from "../basic/Colors.tsx";
 import {navbarHeight} from "../basic/Sizes.tsx";
-import {CommentInterface, PostInterface} from "../interfaces.ts";
+import {CommentInterface} from "../interfaces.ts";
 import Comment from "../core/Comment.tsx";
+import {useQuery} from "react-query";
 
 function SinglePostPage() {
     const {postId} = useParams();
-
-    const [post, setPost] = useState<PostInterface | null>(null);
     const [liked, setLiked] = useState<boolean>(false);
 
-    useEffect(() => {
-        // Fetch the post data based on the postId
-        // This is just a mock implementation, replace it with your actual data fetching logic
-        const mockPost: PostInterface = {
-            id: 1,
-            authorId: 1,
-            title: 'Lorem ipsum dolor sit amet',
-            text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore ' +
-                'et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit. ' +
-                'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur ' +
-                'adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-            timestamp: new Date(),
-            likes: 10,
-            commentsId: [3]
-        };
-        setPost(mockPost);
-    }, [postId]);
+    const {data: post, isLoading, isError} = useQuery("post", async () => {
+        const response = await fetch(`http://localhost:8080/post?id=${postId}`);
+        if (!response.ok) {
+            throw new Error("Failed to fetch posts");
+        }
+        return response.json();
+    });
+    if (isLoading) {
+        return (
+            <LoadingBlock>
+                <LoadingImage src={Loader} alt="Loading image"/>
+            </LoadingBlock>
+        );
+    }
+    if (isError) {
+        return <div>Error: Failed to fetch posts</div>;
+    }
 
     const comments: CommentInterface[] = [
         {id: 1, postId: 3, authorId: 2333333333, text: "Great post!Great post!Great post!", timestamp: new Date()},
@@ -49,22 +48,14 @@ function SinglePostPage() {
         setLiked(!liked);
     };
 
-    if (!post) {
-        return (
-            <LoadingBlock>
-                <LoadingImage src={Loader} alt="Loading image"/>
-            </LoadingBlock>
-        );
-    }
-
     return (
         <PostContainer>
             <PostBody>
                 <AuthorBlock>
                     <AuthorImage src={NoImage} alt="Author image"/>
                     <AuthorData>
-                        <AuthorName>{post.authorId}</AuthorName>
-                        <p>{post.timestamp.toLocaleString()}</p>
+                        <AuthorName>{post.author_id}</AuthorName>
+                        <p>{post.timestamp}</p>
                     </AuthorData>
                 </AuthorBlock>
                 <div>
@@ -85,7 +76,7 @@ function SinglePostPage() {
                     <HeaderText>Comments</HeaderText>
                     <AddCommentButton>Add comment</AddCommentButton>
                 </CommentsHeader>
-                {post.commentsId.length > 0 ? (
+                {post.comments_ids.length > 0 ? (
                     comments.map((comment: CommentInterface) => (
                         <Comment key={comment.id} comment={comment}/>
                     ))
@@ -126,14 +117,14 @@ const AddCommentButton = styled.button`
     background-color: ${blueColor};
     padding: 5px 10px;
     border-radius: 5px;
-    
+
     &:hover {
         cursor: pointer;
     }
 `;
 
 const TextNoComments = styled.div`
-    
+
 `;
 
 const PostContainer = styled.div`
@@ -146,6 +137,7 @@ const PostContainer = styled.div`
 `;
 
 const PostBody = styled.div`
+    width: 100%;
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 30px 60px;

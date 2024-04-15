@@ -3,13 +3,32 @@ import styled from "styled-components";
 import {navbarHeight} from "../basic/Sizes.tsx";
 import {blueColor} from "../basic/Colors.tsx";
 import {Link} from "react-router-dom";
+import {useMutation} from "react-query";
 
+import {useDispatch, useSelector} from 'react-redux';
+import { login } from '../../../redux/slices/authSlice.tsx';
 
 interface AuthPageProps {
     type: "login" | "register";
 }
 
+type FormDataLogin = {
+    email: string;
+    password: string;
+};
+
+type FormDataRegister = {
+    username: string;
+    email: string;
+    password: string;
+    passwordRepeat: string;
+};
+
 function AuthPage({type}: AuthPageProps) {
+    const dispatch = useDispatch();
+    const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+    const userId = useSelector((state) => state.auth.userId);
+
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [passwordRepeat, setPasswordRepeat] = useState<string>("");
@@ -18,6 +37,10 @@ function AuthPage({type}: AuthPageProps) {
     const [isValidEmail, setIsValidEmail] = useState<boolean>(true);
     const [isPasswordRepeat, setIsPasswordRepeat] = useState<boolean>(true);
     const [isValidUsername, setIsValidUsername] = useState<boolean>(true);
+
+    const [loginMessage, setLoginMessage] = useState<string>("");
+    const [registerMessage, setRegisterMessage] = useState<string>("");
+
 
     const validateUsername = (username: string): boolean => {
         return username.length >= 5;
@@ -32,17 +55,50 @@ function AuthPage({type}: AuthPageProps) {
         return password === passwordRepeat;
     }
 
+    const loginMutation = useMutation((formData: FormDataLogin) =>
+        fetch('http://localhost:8080/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+        }).then((res) => {
+            res.json().then(data => {
+                if (data.message == 'Authentication successful') {
+                    const id = data.user_id;
+                    dispatch(login({ userId: id }));
+                }
+                setLoginMessage(data.message)
+            });
+        }));
+
+
+    const registrationMutation = useMutation((formData: FormDataRegister) =>
+        fetch('http://localhost:8080/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+        }).then((res) => res.json().then((data) => {
+            setRegisterMessage(data.message);
+        }))
+    );
+
     const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (!validateEmail(email)) {
             setIsValidEmail(false);
             return;
         }
-        //Login Logic
-        console.log("handleLogin");
+        if (isLoggedIn) {
+            setLoginMessage("You are logged in!");
+            return;
+        }
+        loginMutation.mutate({email, password});
     }
 
-    const handleRegister = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (!validateUsername(username)) {
             setIsValidUsername(false);
@@ -56,8 +112,11 @@ function AuthPage({type}: AuthPageProps) {
             setIsPasswordRepeat(false);
             return;
         }
-        //Register Logic
-        console.log("handleRegister");
+        try {
+            await registrationMutation.mutateAsync({ username, email, password, passwordRepeat });
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     return (
@@ -123,7 +182,29 @@ function AuthPage({type}: AuthPageProps) {
                         ? "Don't have an account? Register now"
                         : "Already have an account? Login now"}
                 </RegisterLink>
-                <Button type="submit">{type === "login" ? "Login" : "Register"}</Button>
+                {type === "register"
+                    ?
+                    <>
+                        <Button type="submit" disabled={registrationMutation.isLoading}>
+                            {registrationMutation.isLoading ? 'Register in...' : 'Register'}
+                        </Button>
+                        {registerMessage !== "User registered successfully"
+                            ? <ErrorMessage>{registerMessage}</ErrorMessage>
+                            : <SuccessMessage>{registerMessage}</SuccessMessage>
+                        }
+                    </>
+                    :
+                    <>
+                        <Button type="submit" disabled={loginMutation.isLoading}>
+                            {loginMutation.isLoading ? 'Logging in...' : 'Login'}
+                        </Button>
+                        {loginMessage !== "Authentication successful"
+                            ? <ErrorMessage>{loginMessage}</ErrorMessage>
+                            : <SuccessMessage>{loginMessage}</SuccessMessage>
+                        }
+                    </>
+
+                }
             </LoginForm>
         </LoginFormContainer>
     );
@@ -169,6 +250,11 @@ const Input = styled.input`
 
 const ErrorMessage = styled.p`
     color: red;
+    margin-top: 5px;
+`;
+
+const SuccessMessage = styled.p`
+    color: #029e02;
     margin-top: 5px;
 `;
 

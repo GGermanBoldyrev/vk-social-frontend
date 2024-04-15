@@ -3,19 +3,34 @@ import styled from 'styled-components';
 import Container from "../basic/Container.tsx";
 import {blueColor} from "../basic/Colors.tsx";
 import {navbarHeight} from "../basic/Sizes.tsx";
+import {useSelector} from "react-redux";
 
 interface Page {
     name: string;
     link: string;
 }
 
-const pages: Page[] = [
-    {name: 'Home', link: '/'},
-    {name: 'Posts', link: '/posts'},
-    {name: 'Login', link: '/login'},
-];
-
 const Navbar = () => {
+    const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+    const userId = useSelector((state) => state.auth.userId);
+
+    let pages: Page[] = [
+        {name: 'Home', link: '/'},
+        {name: 'Posts', link: '/posts'},
+    ];
+
+    if (isLoggedIn) {
+        pages = [
+            ...pages,
+            {name: 'Profile', link: `/profile?user_id=${userId}`}
+        ];
+    } else {
+        pages = [
+            ...pages,
+            {name: 'Login', link: '/login'},
+        ]
+    }
+
     return (
         <Nav>
             <Container>

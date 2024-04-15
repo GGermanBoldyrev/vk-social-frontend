@@ -9,12 +9,12 @@ export interface AuthorInterface {
 
 export interface PostInterface {
     id: number;
-    authorId: number; // ID of the author who created the post
+    author_id: number; // ID of the author who created the post
     title: string;
     text: string;
     timestamp: Date;
     likes: number;
-    commentsId: number[] // Array of comments IDs the post belongs
+    comments_ids: number[] // Array of comments IDs the post belongs
 }
 
 export interface CommentInterface {
