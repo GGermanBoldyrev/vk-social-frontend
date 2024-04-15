@@ -26,7 +26,9 @@ type FormDataRegister = {
 
 function AuthPage({type}: AuthPageProps) {
     const dispatch = useDispatch();
+    // @ts-ignore
     const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+    // @ts-ignore
     const userId = useSelector((state) => state.auth.userId);
 
     const [email, setEmail] = useState<string>("");

@@ -11,7 +11,9 @@ interface Page {
 }
 
 const Navbar = () => {
+    // @ts-ignore
     const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+    // @ts-expect-error
     const userId = useSelector((state) => state.auth.userId);
 
     let pages: Page[] = [
